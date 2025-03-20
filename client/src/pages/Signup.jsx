@@ -1,153 +1,94 @@
-import React, { useState } from 'react'
-import {toast} from "react-hot-toast";
-import {authStore} from "../store/useAuthStore.js";
-import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
-import { Link } from 'react-router-dom';
-import  AuthImagePattern  from "../components/skeletons/AuthImagePattern.jsx"
+"use client";
+import React from "react";
+import { Label } from "../components/ui/Label";
+import { Input } from "../components/ui/Input";
+import { cn } from "../utils/helper.js";
 
-const Signup = () => {
-  const [showPassword,setShowPassword] = useState(false);
-  const [formData,setFormData] = useState({
-    fullName:"",
-    email:"",
-    password:""
-  });
-  const {signup,isSigningUp} = authStore();
+import {
+  IconBrandGoogle,
+} from "../../node_modules/@tabler/icons-react";
 
-  const validateForm = () => {
-    if(!formData.fullName.trim()) return toast.error("Full Name is required");
-    if(!formData.email.trim()) return toast.error("Email is required");
-    if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
-    if(!formData.password) return toast.error("Password is required");
-    if(formData.password.length < 6) return toast.error("Password must be atleats 6 characteres long");
-   
-    return true;
-  }
-
+export function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const success = validateForm();
-
-    if(success === true) return signup(formData);
-  }
-  
+    console.log("Form submitted");
+  };
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-    {/* left side */}
-    <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-      <div className="w-full max-w-md space-y-8">
-        {/* LOGO */}
-        <div className="text-center mb-8">
-          <div className="flex flex-col items-center gap-2 group">
-            <div
-              className="size-12 rounded-xl bg-primary/10 flex items-center justify-center 
-            group-hover:bg-primary/20 transition-colors"
-            >
-              <MessageSquare className="size-6 text-primary" />
-            </div>
-            <h1 className="text-2xl font-bold mt-2">Create Account</h1>
-            <p className="text-base-content/60">Get started with your free account</p>
-          </div>
+    <div
+      className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
+      <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+        Welcome to EduQuest
+      </h2>
+      <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
+        Signup to EduQuest 
+      </p>
+      <form className="my-8" onSubmit={handleSubmit}>
+        <div
+          className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+          <LabelInputContainer>
+            <Label htmlFor="firstname">First name</Label>
+            <Input id="firstname" placeholder="Tyler" type="text" />
+          </LabelInputContainer>
+          <LabelInputContainer>
+            <Label htmlFor="lastname">Last name</Label>
+            <Input id="lastname" placeholder="Durden" type="text" />
+          </LabelInputContainer>
         </div>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="email">Email Address</Label>
+          <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" placeholder="••••••••" type="password" />
+        </LabelInputContainer>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Full Name</span>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User className="size-5 text-base-content/40" />
-              </div>
-              <input
-                type="text"
-                className={`input input-bordered w-full pl-10`}
-                placeholder="Anmol Verma"
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              />
-            </div>
-          </div>
+        <button
+          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
+          type="submit">
+          Sign up &rarr;
+          <BottomGradient />
+        </button>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Email</span>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="size-5 text-base-content/40" />
-              </div>
-              <input
-                type="email"
-                className={`input input-bordered w-full pl-10`}
-                placeholder="you@example.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-            </div>
-          </div>
+        <div
+          className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Password</span>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="size-5 text-base-content/40" />
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                className={`input input-bordered w-full pl-10`}
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="size-5 text-base-content/40" />
-                ) : (
-                  <Eye className="size-5 text-base-content/40" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          <button type="submit" className="btn btn-primary w-full" disabled={isSigningUp}>
-            {isSigningUp ? (
-              <>
-                <Loader2 className="size-5 animate-spin" />
-                Loading...
-              </>
-            ) : (
-              "Create Account"
-            )}
+        <div className="flex flex-col space-y-4">
+          <button
+            className="group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
+            type="submit">
+            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+            <span className="text-sm text-neutral-700 dark:text-neutral-300">
+              Google
+            </span>
+            <BottomGradient />
           </button>
-        </form>
-
-        <div className="text-center">
-          <p className="text-base-content/60">
-            Already have an account?{" "}
-            <Link to="/login" className="link link-primary">
-              Sign in
-            </Link>
-          </p>
         </div>
-      </div>
+      </form>
     </div>
-
-    {/* right side */}
-
-    <AuthImagePattern
-      title="Join our community"
-      subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
-    />
-  </div>
-  )
+  );
 }
 
-export default Signup
+const BottomGradient = () => {
+  return (
+    <>
+      <span
+        className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+      <span
+        className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({
+  children,
+  className
+}) => {
+  return (
+    <div className={cn("flex w-full flex-col space-y-2", className)}>
+      {children}
+    </div>
+  );
+};
+
+export default Signup;
