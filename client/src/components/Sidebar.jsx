@@ -3,7 +3,7 @@
 
 import React, { useState, createContext, useContext } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { IconMenu2, IconX, IconBrandTabler, IconUserBolt, IconSettings, IconArrowLeft } from "../../node_modules/@tabler/icons-react";
+import { IconMenu2, IconX, IconBrandTabler, IconUserBolt, IconSettings, IconArrowLeft, IconHome } from "../../node_modules/@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 // Context for managing the sidebar's state
@@ -44,7 +44,7 @@ const SidebarLink = ({ link }) => {
           opacity: open ? 1 : 0,
           width: open ? "auto" : 0,
         }}
-        className="transition duration-150 whitespace-pre"
+        className="transition ease-in-out duration-100 whitespace-pre"
       >
         {link.label}
       </motion.span>
@@ -56,6 +56,7 @@ export const Sidebar = () => {
   const [open, setOpen] = useState(false);
 
   const links = [
+    { label:"Home", href:"/", icon:<IconHome/>},
     { label: "Dashboard", href: "/dashboard", icon: <IconBrandTabler /> },
     { label: "Profile", href: "/profile", icon: <IconUserBolt /> },
     { label: "Settings", href: "/settings", icon: <IconSettings /> },

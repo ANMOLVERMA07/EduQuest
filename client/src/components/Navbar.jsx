@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <nav className="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
       <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
-        <a href="#" className="flex items-center">
+        <a onClick={() => navigate('/')} className="flex items-center">
           <img
             src="https://www.svgrepo.com/show/499962/music.svg"
             className="h-6 mr-3 sm:h-9"
@@ -20,10 +22,16 @@ const Navbar = () => {
           </div>
 
           <a
-            href="https://themesberg.com/product/tailwind-css/landing-page"
-            className="shadow-[0_4px_14px_0_rgb(0,118,255,39%)] hover:shadow-[0_6px_20px_rgba(0,118,255,23%)] hover:bg-[rgba(0,118,255,0.9)] px-8 py-2 bg-[#0070f3] rounded-md text-white font-light transition duration-200 ease-linear"
+            onClick={() => navigate('/signup')}
+            className="shadow-[0_4px_14px_0_rgb(0,118,255,39%)] hover:shadow-[0_6px_20px_rgba(0,118,255,23%)] hover:bg-[rgba(0,118,255,0.9)] px-4 py-1 mr-2 bg-[#0070f3] rounded-md text-white font-light transition duration-200 ease-linear"
           >
-            Download
+            Signup
+          </a>
+          <a
+            onClick={() => navigate('/login')}
+            className="shadow-[0_4px_14px_0_rgb(0,118,255,39%)] hover:shadow-[0_6px_20px_rgba(0,118,255,23%)] hover:bg-[rgba(0,118,255,0.9)] px-4 ml-1 py-1 bg-[#0070f3] rounded-md text-white font-light transition duration-200 ease-linear"
+          >
+            Login
           </a>
           <button
             data-collapse-toggle="mobile-menu-2"
@@ -78,7 +86,7 @@ const Navbar = () => {
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
               >
-                Company
+                Courses
               </a>
             </li>
             <li>
@@ -86,7 +94,7 @@ const Navbar = () => {
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
               >
-                Marketplace
+                Settings
               </a>
             </li>
             <li>
@@ -94,7 +102,7 @@ const Navbar = () => {
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
               >
-                Features
+                Profile
               </a>
             </li>
             <li>
@@ -102,7 +110,7 @@ const Navbar = () => {
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
               >
-                Team
+                About
               </a>
             </li>
             <li>

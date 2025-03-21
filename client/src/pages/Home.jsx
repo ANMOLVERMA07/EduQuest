@@ -38,15 +38,6 @@ export default function Home() {
       </div>
 
 
-        
-
-
-
-
-
-<Description/>
-
-
     </div>
 
 
