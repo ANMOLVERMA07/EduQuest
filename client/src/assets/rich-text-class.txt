@@ -1,21 +1,3 @@
-@import "tailwindcss";
-
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-
-*{
-    font-family: Outfit;
-}
-
-@layer base{
-    html{
-        scroll-behavior: smooth;
-    }
-}
-
-::-webkit-scrollbar{
-    display: none;
-}
-
 .rich-text { font-size: 15px; color: #7A7B7D; }
 
 .rich-text p { margin-bottom: 16px; }
