@@ -2,7 +2,7 @@ import {create} from "zustand";
 import { axiosInstance } from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 
-const BASE_URL=import.meta.env.MODE==="development" ? "http://localhost:3000" : "/";
+const BASE_URL=import.meta.env.MODE==="development" ? "https://eduquest-blvt.onrender.com" : "/";
 
 export const authStore = create((set,get) => ({
     authUser:null,

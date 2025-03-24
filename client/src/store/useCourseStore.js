@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { axiosInstance } from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 
-const STUDENT_BASE_URL=import.meta.env.MODE==="development" ? "http://localhost:3000/api" : "/";
-const ADMIN_BASE_URL=import.meta.env.MODE==="development" ? "http://localhost:3000/api" : "/";
+const STUDENT_BASE_URL=import.meta.env.MODE==="development" ? "https://eduquest-blvt.onrender.com/api" : "/";
+const ADMIN_BASE_URL=import.meta.env.MODE==="development" ? "https://eduquest-blvt.onrender.com/api" : "/";
 
 export const courseStore = create((set, get) => ({
   courses: [],
