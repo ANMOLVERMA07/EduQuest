@@ -11,7 +11,7 @@ import Dashboard from './pages/admin/Dashboard';
 import AddCourse from './pages/admin/AddCourse';
 import MyCourses from './pages/admin/MyCourses';
 import StudentEntrolled from './pages/admin/StudentEnrolled';
-import Navbar from './components/user/Navbar'
+import Navbar from './components/user/Navbar';
 import './App.css';
 
 function App() {
@@ -22,17 +22,17 @@ function App() {
    {!isEducatorRoute &&<Navbar />}   
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/course-list" element={<CoursesList />} />
+        <Route path="/courses" element={<CoursesList />} />
         <Route path="/course-list/:input" element={<CoursesList />} />
-        <Route path="/course/:id" element={<CourseDetails />} />
-        <Route path="/my-enrollments" element={<MyEnrollments />} />
+        <Route path="/courses/:id" element={<CourseDetails />} />
+        <Route path="/courses/enrolled" element={<MyEnrollments />} />
         <Route path="/player/:courseId" element={<Player />} />
         <Route path="/loading/:path" element={<Loading />} />
         <Route path="/educator" element={<Educator />} />
         <Route path="/educator/dashboard" element={<Dashboard />} />
-        <Route path="/educator/add-course" element={<AddCourse />} />
+        <Route path="/educator/courses" element={<AddCourse />} />
         <Route path="/educator/my-courses" element={<MyCourses />} />
-        <Route path="/educator/student-enrolled" element={<StudentEntrolled />} />
+        <Route path="/educator/courses/:id/enrolled-users" element={<StudentEntrolled />} />
       </Routes>
     </div>
   );

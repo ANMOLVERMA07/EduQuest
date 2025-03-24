@@ -3,12 +3,12 @@ import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { assets } from '../../assets/assets';
 import { useClerk, UserButton, useUser } from '@clerk/clerk-react';
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../context/AppContext';
 
 const Navbar = () => {
     const { navigate,isEducator } = useContext(AppContext);
     const location = useLocation();
-    const isCourseListPage = location.pathname.includes('/course-list');
+    const isCourseListPage = location.pathname.includes('/courses');
     const { openSignIn } = useClerk();
     const { user } = useUser();
  
@@ -32,7 +32,7 @@ const Navbar = () => {
                         {user && (
                             <>
                                 {/* <button onClick={()=>{navigate('/educator')}}>{isEducator?'Educator Dashboard':'Become Educator'}</button> */}
-                                <Link to="/my-enrollments">My Enrollments</Link>
+                                <Link to="/courses/enrolled">My Enrollments</Link>
                             </>
                         )}
                     </div>
@@ -66,7 +66,7 @@ const Navbar = () => {
                     {user && (
                         <>
                              {/* <button onClick={()=>{navigate('/educator')}}>{isEducator?'Educator Dashboard':'Become Educator'}</button> */}
-                            <Link to="/my-enrollments">My Enrollments</Link>
+                            <Link to="/courses/enrolled">My Enrollments</Link>
                         </>
                     )}
                     {user ? (

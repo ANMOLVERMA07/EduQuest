@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import SearchBar from '../../components/user/SearchBar'
-import { AppContext } from '../../Context/AppContext'
+import { AppContext } from '../../context/AppContext'
 import { useParams } from 'react-router-dom'
 import CourseCard from '../../components/user/CourseCard'
 import { assets } from '../../assets/assets'
@@ -47,7 +47,7 @@ const CourseList = () => {
         input  &&
         <div className='inline-flex items-center gap-4 py-1 px-4 border rounded-lg mt-8 -mb-8 text-gray-600'>
           <p>{input}</p>
-          <img src={assets.cross_icon} className='cursor-pointer' onClick={()=>navigate('/course-list')} alt="" />
+          <img src={assets.cross_icon} className='cursor-pointer' onClick={()=>navigate('/courses')} alt="" />
         </div>
       }
 

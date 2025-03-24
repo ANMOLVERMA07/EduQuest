@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { AppContext } from '../../Context/AppContext';
+import { useParams,useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
 import { assets } from '../../assets/assets';
 import humanizeDuration from 'humanize-duration';
 import Footer from '../../components/user/Footer';
@@ -13,6 +13,7 @@ const CourseDetails = () => {
   const [isAlreadyEntrolled, setIsAlreadyEntrolled] = useState(false);
   const [playerData, setPlayerData] = useState(null)
   const { allCourses, calculateRating, calculateChapterTime, calculateCourseDuration, calculateNoOfLectures, currency } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const fetchCourseData = async () => {
     if (allCourses && allCourses.length > 0) {
@@ -168,7 +169,7 @@ const CourseDetails = () => {
 
 
             </div>
-            <button className='md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium'>{isAlreadyEntrolled ? "Already Entrolled" : "Entroll Now"}
+            <button className='md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium'>{isAlreadyEntrolled ? "Already Entrolled" : "Enroll Now"}
 
             </button>
 

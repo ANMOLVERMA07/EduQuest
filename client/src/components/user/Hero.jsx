@@ -25,10 +25,9 @@ const Hero = () => {
         <SearchBar/>
         <Companies/>
         <CourseSection/>
-        <Testimonails/>
+        <Testimonials/>
         <CallToAction/>
         <Footer/>
-        
       </div>
 
 

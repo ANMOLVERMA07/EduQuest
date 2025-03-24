@@ -9,7 +9,7 @@ import {
     deleteAssignment,
     getAllCourseAnalytics,
     getCourseAnalytics,
-} from "../controllers/courseController.js";
+} from "../controllers/adminController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { roleMiddleware } from "../middlewares/roleMiddleware.js"; // Example for role-based authorization
 
