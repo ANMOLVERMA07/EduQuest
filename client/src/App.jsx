@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<CoursesList />} />
-        <Route path="/course-list/:input" element={<CoursesList />} />
+        <Route path="/courses/:input" element={<CoursesList />} />
         <Route path="/courses/:id" element={<CourseDetails />} />
         <Route path="/courses/enrolled" element={<MyEnrollments />} />
         <Route path="/player/:courseId" element={<Player />} />

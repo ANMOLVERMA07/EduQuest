@@ -23,7 +23,7 @@ export const courseStore = create((set, get) => ({
   fetchCourses: async () => {
     set({ isFetchingCourses: true });
     try {
-      const res = await axiosInstance.get("/courses/courses");
+      const res = await axiosInstance.get("/api/courses");
       set({ courses: res.data });
     } catch (error) {
       console.log("Error in fetchCourses:", error);
@@ -39,7 +39,7 @@ export const courseStore = create((set, get) => ({
         set({ isCreatingCourse: true });
 
         // Send API request to create course
-        const res = await axiosInstance.post("/admin/courses", data);
+        const res = await axiosInstance.post("/api/admin/courses", data);
 
         // Update courses state with the new course
         set((state) => ({
@@ -71,7 +71,7 @@ export const courseStore = create((set, get) => ({
   updateCourse: async (id, data) => {
     set({ isUpdatingCourse: true });
     try {
-      const res = await axiosInstance.put(`/courses/${id}`, data);
+      const res = await axiosInstance.put(`/api/admin/courses/${id}`, data);
       set((state) => ({
         courses: state.courses.map((course) =>
           course.id === id ? res.data : course
@@ -89,7 +89,7 @@ export const courseStore = create((set, get) => ({
   deleteCourse: async (id) => {
     set({ isDeletingCourse: true });
     try {
-      await axiosInstance.delete(`/courses/${id}`);
+      await axiosInstance.delete(`/api/admin/courses/${id}`);
       set((state) => ({
         courses: state.courses.filter((course) => course.id !== id),
       }));

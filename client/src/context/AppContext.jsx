@@ -9,12 +9,22 @@ export const AppContextProvider = (props) => {
     const currency = import.meta.env.VITE_CURRENCY;
     const navigate = useNavigate();
     const [allCourses, setAllCourses] = useState([]);
-    const [isEducator, setIsEducator] = useState(true);
+    let [isEducator, setIsEducator] = useState(true);
     const [entrolledCourses, setEntrolledCourses] = useState([]);
 
     const fetchallCourses = async () => {
         setAllCourses(dummyCourses);
     };
+
+    isEducator = (user) => {
+        // Check if the user's role is "instructor"
+        if (user.role === "instructor") {
+            setIsEducator(true); // User is an educator
+        }
+        setIsEducator(false); // User is not an educator
+    };
+    
+    
 
   
 
@@ -42,7 +52,7 @@ export const AppContextProvider = (props) => {
 
     const calculateCourseDuration=(course)=>{
         let time=0
-        course.courseContent.map((chapter)=>chapter.chapterContent.map((lecture)=>time+=lecture.lectureDuratio))
+        course.courseContent.map((chapter)=>chapter.chapterContent.map((lecture)=>time+=lecture.lectureDuration))
         return humanizeDuration(time*60*1000,{units:["h","m"]})
     }
 

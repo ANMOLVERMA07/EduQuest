@@ -8,7 +8,8 @@ const SearchBar = ({ data }) => {
 
   const onSearchHandler = (e) => {
     e.preventDefault();
-    navigate(`/course-list/${input}`); // Ensure a valid URL path
+    // CHANGES /course-list/${input} to /courses/${input}
+    navigate(`/courses/${input}`); // Ensure a valid URL path
   };
 
   return (

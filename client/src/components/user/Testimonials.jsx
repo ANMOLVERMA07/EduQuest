@@ -9,7 +9,7 @@ const Testimonials = () => {
         Hear from our learners as they share their journeys of transformation, 
         success, and how our <br /> platform has made a difference in their lives.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-12 mt-14">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-16 mt-14">
     {dummyTestimonial.map((testimonial, index) => (
         <div
             key={index}

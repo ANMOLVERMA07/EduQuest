@@ -19,7 +19,8 @@ const CourseSection = () => {
       {/* <div className='grid grid-cols-auto px-4 md:px-0 md:my-16 my-10 gap-4'>
         {allCourses.slice(0,4).map((course,index)=><CourseCard key={index}   course={course}/>)}
       </div> */}
-      <Link onClick={() => scrollTo(0, 0)} className='text-gray-500 border border-gray-500/30 px-10 py-3 rounded' to={'/courses '}> Show all Courses</Link>
+      {/* CHANGES /courses to /api/courses */}
+      <Link onClick={() => scrollTo(0, 0)} className='text-gray-500 border border-gray-500/30 px-10 py-3 rounded' to={'/api/courses'}> Show all Courses</Link>
     </div>
   )
 }

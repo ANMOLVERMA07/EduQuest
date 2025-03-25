@@ -8,7 +8,7 @@ import Footer from '../../components/user/Footer';
 import { Rating } from 'react-simple-star-rating';
 
 const Player = () => {
-  const { entrolledCourses, calculateChapterTime } = useContext(AppContext);
+  const { enrolledCourses, calculateChapterTime } = useContext(AppContext);
   const { courseId } = useParams();
   const [courseData, setCourseData] = useState(null);
   const [openSections, setOpenSections] = useState({});
@@ -16,9 +16,20 @@ const Player = () => {
 
   // Function to fetch the course data based on courseId
   const getCourseData = () => {
-    const course = entrolledCourses.find((course) => course._id === courseId);
-    if (course) setCourseData(course);
-  };
+    if (!enrolledCourses || !Array.isArray(enrolledCourses)) {
+        console.error("enrolledCourses is not available or invalid.");
+        return;
+    }
+
+    const course = enrolledCourses.find((course) => course._id === courseId);
+
+    if (course) {
+        setCourseData(course);
+    } else {
+        console.error(`No course found with ID: ${courseId}`);
+    }
+};
+
 
   // Toggle section visibility
   const toggleSection = (index) => {
@@ -37,7 +48,7 @@ const Player = () => {
   // Effect to fetch course data when entrolledCourses changes
   useEffect(() => {
     getCourseData();
-  }, [entrolledCourses]);
+  }, [enrolledCourses]);
 
   return (
     <>

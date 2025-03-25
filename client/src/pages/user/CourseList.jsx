@@ -47,7 +47,8 @@ const CourseList = () => {
         input  &&
         <div className='inline-flex items-center gap-4 py-1 px-4 border rounded-lg mt-8 -mb-8 text-gray-600'>
           <p>{input}</p>
-          <img src={assets.cross_icon} className='cursor-pointer' onClick={()=>navigate('/courses')} alt="" />
+          {/* CHANGES /courses to /api/courses  */}
+          <img src={assets.cross_icon} className='cursor-pointer' onClick={()=>navigate('/api/courses')} alt="" />
         </div>
       }
 

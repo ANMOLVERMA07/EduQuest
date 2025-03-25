@@ -21,7 +21,7 @@ const router = express.Router();
 
 // Course Management
 router.post("/courses", authMiddleware, roleMiddleware(["admin", "instructor"]), createCourse);
-router.get("/courses/:id", authMiddleware, roleMiddleware(["admin", "instructor"]), updateCourse); 
+router.put("/courses/:id", authMiddleware, roleMiddleware(["admin", "instructor"]), updateCourse); 
 router.delete("/courses/:id", authMiddleware, roleMiddleware(["admin", "instructor"]), deleteCourse);
 router.post('/:courseId/add-chapter', authMiddleware, roleMiddleware(["admin", "instructor"]), addChapter);   // Define the route for adding a chapter
 router.put('/:courseId/:chapterId/edit-chapter',  authMiddleware, roleMiddleware(["admin", "instructor"]), editChapter);    // Define the route for editing a chapter
