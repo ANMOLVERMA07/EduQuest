@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useCourseStore from "../../store/useCourseStore";
+import {courseStore} from "../../store/useCourseStore";
 import { toast } from "react-toastify";
 
 const CreateCourseForm = () => {
@@ -13,7 +13,7 @@ const CreateCourseForm = () => {
         courseThumbnail: "",
     });
 
-    const { createCourse } = useCourseStore();
+    const { createCourse } = courseStore;
 
     const [errors, setErrors] = useState({});
 

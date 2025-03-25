@@ -20,12 +20,17 @@ const Navbar = () => {
                     isCourseListPage ? 'bg-white' : 'bg-cyan-100/70'
                 }`}
             >
-                <img 
+
+                <h1
+                className='text-3xl font-bold w-32 lg:w-32 cursor-pointer'
+                onClick={() => navigate('/')} 
+                >EduQuest</h1>
+                {/* <img 
                     onClick={() => navigate('/')} 
                     src={assets.logo} 
                     alt="Logo" 
                     className="w-32 lg:w-32 cursor-pointer" 
-                />
+                /> */}
 
                 <div className="flex items-center gap-5 text-gray-500">
                     <div className="flex items-center gap-5">
