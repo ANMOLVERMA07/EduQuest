@@ -3,130 +3,92 @@ import USER from "../models/userModel.js";
 import ASSIGNMENT from "../models/assignmentModel.js";
 import { StatusCodes } from "http-status-codes";
 
-// for creating a course
+// Controller for creating a new course
 export const createCourse = async (req, res) => {
-    const { title, description, price, category, thumbnail, content } = req.body;
-
     try {
-        // Validate required fields
-        if (!title || !description || !price || !category || !thumbnail) {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                success: false,
-                message: "All required fields must be filled (title, description, price, category, thumbnail).",
-            });
+        // Extract data from the request body
+        const {
+            courseTitle,
+            courseCategory,
+            courseDescription,
+            coursePrice,
+            isPublished,
+            discount,
+            courseContent,
+            educator,
+            courseThumbnail,
+        } = req.body;
+
+        // Check for mandatory fields
+        if (!courseTitle || !courseCategory || !courseDescription || !coursePrice || !educator || !courseThumbnail) {
+            return res.status(400).json({ success: false,message: "All required fields must be provided" });
         }
 
-        // Validate content array structure
-        if (content && content.length > 0) {
-            const isContentValid = content.every(
-                (item) =>
-                    item.title && item.videoUrl && item.duration &&
-                    typeof item.duration === "number" && item.duration > 0
-            );
-            if (!isContentValid) {
-                return res.status(StatusCodes.BAD_REQUEST).json({
-                    success: false,
-                    message: "Invalid content structure. Each content item must have a title, videoUrl, and a positive duration.",
-                });
-            }
-        }
-
-        // Create a new course document
-        const course = new COURSE({
-            title,
-            description,
-            price,
-            category,
-            thumbnail,
-            content,
-            instructor: req.user._id, // Get instructor ID from `authMiddleware`
+        // Create the new course object
+        const newCourse = new COURSE({
+            courseTitle,
+            courseCategory,
+            courseDescription,
+            coursePrice,
+            isPublished,
+            discount,
+            courseContent,
+            educator,
+            courseThumbnail,
         });
 
         // Save the course to the database
-        const savedCourse = await course.save();
+        const savedCourse = await newCourse.save();
 
-        // Return a success response
+        // Send success response
         res.status(StatusCodes.CREATED).json({
             success: true,
-            message: "Course created successfully!",
+            message: "Course created successfully",
             data: savedCourse,
         });
+
     } catch (error) {
+        // Handle errors (e.g., validation errors, database errors)
         console.error("Error in createCourse controller:", error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
-            message: "Internal server error.",
+            message: "Internal server error",
         });
     }
 };
 
-// Update an existing course
+
+// Controller for updating an existing course
 export const updateCourse = async (req, res) => {
-    const { id } = req.params; // Course ID from route parameters
-    const { title, description, price, category, thumbnail, content, published } = req.body;
-
     try {
-        // Validate the existence of the course in the database
+        const { id } = req.params; // Extract course ID from route parameters
+        const updates = req.body; // Extract update data from the request body
+
+        // Validate the existence of the course
         const course = await COURSE.findById(id);
-
         if (!course) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                success: false,
-                message: "Course not found",
-            });
+            return res.status(404).json({ message: "Course not found" });
         }
 
-        // Only allow updates to specific fields
-        if (title) course.title = title;
-        if (description) course.description = description;
-        if (price) {
-            if (price < 0) {
-                return res.status(StatusCodes.BAD_REQUEST).json({
-                    success: false,
-                    message: "Price must be a positive value",
-                });
-            }
-            course.price = price;
-        }
-        if (category) course.category = category;
-        if (thumbnail) course.thumbnail = thumbnail;
+        // Update the course fields
+        const updatedCourse = await COURSE.findByIdAndUpdate(
+            id,
+            { $set: updates }, // Apply the updates to the course
+            { new: true, runValidators: true } // Return the updated document and validate data
+        );
 
-        // Validate the content array structure (if provided)
-        if (content && content.length > 0) {
-            const isContentValid = content.every(
-                (item) =>
-                    item.title && item.videoUrl && item.duration &&
-                    typeof item.duration === "number" && item.duration > 0
-            );
-
-            if (!isContentValid) {
-                return res.status(StatusCodes.BAD_REQUEST).json({
-                    success: false,
-                    message: "Invalid content structure. Each item must have a title, videoUrl, and positive duration.",
-                });
-            }
-            course.content = content;
-        }
-
-        // Update publish status if provided
-        if (typeof published === "boolean") {
-            course.published = published;
-        }
-
-        // Save the updated course
-        const updatedCourse = await course.save();
-
-        // Respond with the updated course
+        // Send the success response
         res.status(StatusCodes.OK).json({
             success: true,
             message: "Course updated successfully",
             data: updatedCourse,
         });
     } catch (error) {
+        // Handle errors (e.g., validation or database errors)
         console.error("Error in updateCourse controller:", error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
-            message: "Internal server error",
+            message: "Failed to update the course",
         });
     }
 };
@@ -162,30 +124,28 @@ export const deleteCourse = async (req, res) => {
     }
 };
 
-// get enrolled users for a particular course
+
+// Controller for getting enrolled users for a specific course
 export const enrolledUsers = async (req, res) => {
-    const { id } = req.params; // Extract the course ID from the request parameters
-
     try {
-        // Check if the course exists
-        const course = await COURSE.findById(id).populate("enrolledStudents", "firstName lastName email profilePicture");
+        const { courseId } = req.params; // Extract course ID from route parameters
 
+        // Find the course by ID
+        const course = await COURSE.findById(courseId).populate('enrolledStudents', 'firstName email profilePicture'); // Populate user details (optional: customize fields)
+
+        // Check if the course exists
         if (!course) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                success: false,
-                message: "Course not found",
-            });
+            return res.status(404).json({ message: "Course not found" });
         }
 
-        // Fetch enrolled students from the populated `enrolledStudents` field
-        const enrolledStudents = course.enrolledStudents;
-
+        // Respond with the list of enrolled users
         res.status(StatusCodes.OK).json({
             success: true,
             message: "Enrolled users fetched successfully",
             data: enrolledStudents,
         });
     } catch (error) {
+        // Handle errors
         console.error("Error in enrolledUsers controller:", error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
@@ -194,6 +154,228 @@ export const enrolledUsers = async (req, res) => {
     }
 };
 
+
+// Controller for adding a chapter to a specific course
+export const addChapter = async (req, res) => {
+    try {
+        const { courseId } = req.params; // Extract course ID from route parameters
+        const { chapterOrder, chapterTitle, chapterContent } = req.body; // Extract chapter details from request body
+
+        // Validate required fields
+        if (!chapterOrder || !chapterTitle || !chapterContent) {
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: "All chapter fields (chapterOrder, chapterTitle, chapterContent) must be provided",
+            });
+        }
+
+        // Find the course
+        const course = await COURSE.findById(courseId);
+        if (!course) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        // Create a new chapter object
+        const newChapter = {
+            chapterOrder,
+            chapterTitle,
+            chapterContent,
+        };
+
+        // Add the new chapter to the course
+        course.courseContent.push(newChapter);
+
+        // Save the updated course
+        const savedCourse = await course.save();
+
+        // Send success response
+        res.status(StatusCodes.CREATED).json({
+            success: true,
+            message: "Chapter added successfully",
+            data: savedCourse,
+        });
+    } catch (error) {
+        // Handle errors
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Failed to add chapter",
+            error: error.message,
+        });
+    }
+};
+
+// Controller for editing a chapter in a course
+export const editChapter = async (req, res) => {
+    try {
+        const { courseId, chapterId } = req.params; // Extract course and chapter IDs from route parameters
+        const updates = req.body; // Extract updated chapter details from request body
+
+        // Find the course
+        const course = await COURSE.findById(courseId);
+        if (!course) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        // Find the specific chapter in the course
+        const chapter = course.courseContent.find((chap) => chap._id.toString() === chapterId);
+        if (!chapter) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Chapter not found in the specified course",
+            });
+        }
+
+        // Update the chapter with the provided fields
+        Object.keys(updates).forEach((key) => {
+            chapter[key] = updates[key];
+        });
+
+        // Save the updated course
+        const savedCourse = await course.save();
+
+        // Send success response
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: "Chapter updated successfully",
+            data: savedCourse,
+        });
+    } catch (error) {
+        // Handle errors
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Failed to update chapter",
+            error: error.message,
+        });
+    }
+};
+
+
+// Controller for adding a lecture to a specific chapter in a course
+export const addLecture = async (req, res) => {
+    try {
+        const { courseId, chapterId } = req.params; // Extract course and chapter IDs from route parameters
+        const { lectureTitle, lectureDuration, lectureUrl, isPreviewFree, lectureOrder } = req.body; // Extract lecture details from request body
+
+        // Validate required fields
+        if (!lectureTitle || !lectureDuration || !lectureUrl || isPreviewFree === undefined || !lectureOrder) {
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: "All lecture fields must be provided",
+            });
+        }
+
+        // Find the course
+        const course = await COURSE.findById(courseId);
+        if (!course) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        // Find the specific chapter in the course
+        const chapter = course.courseContent.find((chap) => chap._id.toString() === chapterId);
+        if (!chapter) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Chapter not found in the specified course",
+            });
+        }
+
+        // Create a new lecture object
+        const newLecture = {
+            lectureTitle,
+            lectureDuration,
+            lectureUrl,
+            isPreviewFree,
+            lectureOrder,
+        };
+
+        // Add the new lecture to the chapter
+        chapter.chapterContent.push(newLecture);
+
+        // Save the updated course
+        const savedCourse = await course.save();
+
+        // Send success response
+        res.status(StatusCodes.CREATED).json({
+            success: true,
+            message: "Lecture added successfully",
+            data: savedCourse,
+        });
+    } catch (error) {
+        // Handle errors
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Failed to add lecture",
+            error: error.message,
+        });
+    }
+};
+
+
+// Controller for editing a lecture in a specific chapter of a course
+export const editLecture = async (req, res) => {
+    try {
+        const { courseId, chapterId, lectureId } = req.params; // Extract IDs from route parameters
+        const updates = req.body; // Extract updated lecture details from request body
+
+        // Find the course
+        const course = await COURSE.findById(courseId);
+        if (!course) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        // Find the specific chapter in the course
+        const chapter = course.courseContent.find((chap) => chap._id.toString() === chapterId);
+        if (!chapter) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Chapter not found in the specified course",
+            });
+        }
+
+        // Find the specific lecture in the chapter
+        const lecture = chapter.chapterContent.find((lec) => lec._id.toString() === lectureId);
+        if (!lecture) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Lecture not found in the specified chapter",
+            });
+        }
+
+        // Update the lecture with the provided fields
+        Object.keys(updates).forEach((key) => {
+            lecture[key] = updates[key];
+        });
+
+        // Save the updated course
+        const savedCourse = await course.save();
+
+        // Send success response
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: "Lecture updated successfully",
+            data: savedCourse,
+        });
+    } catch (error) {
+        // Handle errors
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Failed to update lecture",
+            error: error.message,
+        });
+    }
+};
 
 // Add an assignment to a specific course
 export const addAssignment = async (req, res) => {
@@ -456,4 +638,8 @@ export default {
     deleteAssignment,
     getAllCourseAnalytics,
     getCourseAnalytics,
+    addLecture,
+    addChapter,
+    editChapter,
+    editLecture
 }

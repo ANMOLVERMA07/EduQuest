@@ -11,6 +11,14 @@ export const courseStore = create((set, get) => ({
   isCreatingCourse: false,
   isUpdatingCourse: false,
   isDeletingCourse: false,
+  isFetchingChapters: false,
+  isCreatingChapter:false,
+  isUpdatingChapter: false,
+  isDeletingChapter: false,
+  isFetchingLectures: false,
+  isCreatingLecture: false,
+  isUpdatingLecture: false,
+  isDeletingLecture: false,
 
   fetchCourses: async () => {
     set({ isFetchingCourses: true });
@@ -26,18 +34,39 @@ export const courseStore = create((set, get) => ({
   },
 
   createCourse: async (data) => {
-    set({ isCreatingCourse: true });
     try {
-      const res = await axiosInstance.post("/admin/courses", data);
-      set((state) => ({ courses: [...state.courses, res.data] }));
-      toast.success("Course created successfully!");
+        // Set loading state
+        set({ isCreatingCourse: true });
+
+        // Send API request to create course
+        const res = await axiosInstance.post("/admin/courses", data);
+
+        // Update courses state with the new course
+        set((state) => ({
+            courses: [...state.courses, res.data],
+        }));
+
+        // Show success toast
+        toast.success("Course created successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+        });
     } catch (error) {
-      console.log("Error in createCourse:", error);
-      toast.error("Failed to create course!");
+        // Log error details for debugging
+        console.error("Error in createCourse:", error);
+
+        // Show error toast with server response or fallback message
+        const errorMessage =
+            error.response?.data?.message || "Failed to create course!";
+        toast.error(errorMessage, {
+            position: "top-right",
+            autoClose: 3000,
+        });
     } finally {
-      set({ isCreatingCourse: false });
+        // Reset loading state
+        set({ isCreatingCourse: false });
     }
-  },
+},
 
   updateCourse: async (id, data) => {
     set({ isUpdatingCourse: true });

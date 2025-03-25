@@ -13,6 +13,8 @@ import MyCourses from './pages/admin/MyCourses';
 import StudentEntrolled from './pages/admin/StudentEnrolled';
 import Navbar from './components/user/Navbar';
 import './App.css';
+import { ToastContainer } from "react-toastify";
+
 
 function App() {
 
@@ -20,6 +22,7 @@ function App() {
   return (
     <div className='text-default min-h-screen bg-white'>
    {!isEducatorRoute &&<Navbar />}   
+   
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<CoursesList />} />
@@ -34,6 +37,7 @@ function App() {
         <Route path="/educator/my-courses" element={<MyCourses />} />
         <Route path="/educator/courses/:id/enrolled-users" element={<StudentEntrolled />} />
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

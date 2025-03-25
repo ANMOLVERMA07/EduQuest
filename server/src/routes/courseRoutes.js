@@ -10,12 +10,12 @@ import {
 
 const router = express.Router();
 
-router.get("/courses",courses);
-router.get("/courses/:id",course);
-router.post("/courses/:id/enroll",authMiddleware,enrollCourse);
-router.get("/courses/enrolled",authMiddleware,enrolledCourses);
+router.get("/",courses);
+router.get("/:id",course);
+router.post("/:id/enroll",authMiddleware,enrollCourse);
+router.get("/enrolled",authMiddleware,enrolledCourses);
 // router.get("/courses/:id/progress",authMiddleware,courseProgress);
-router.post("/courses/:id/reviews",authMiddleware,rateCourse);
+router.post("/:id/reviews",authMiddleware,rateCourse);
 
 
 export default router;
