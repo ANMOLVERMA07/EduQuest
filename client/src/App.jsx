@@ -20,7 +20,7 @@ function App() {
 
   const isEducatorRoute=useMatch('/educator')
   return (
-    <div className='text-default min-h-screen bg-white'>
+    <div className='text-default min-h-screen bg-white bg-gradient-to-b from-cyan-100/70'>
    {!isEducatorRoute &&<Navbar />}   
    
       <Routes>

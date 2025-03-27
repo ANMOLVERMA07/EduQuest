@@ -94,7 +94,7 @@ const CreateCourseForm = () => {
     };
 
     return (
-        <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+        <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg bg-gradient-to-b from-[#A9C9FF] to-[#FFBBEC]">
             <h1 className="text-2xl font-bold mb-6 text-gray-700">Create a New Course</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Course Title */}
@@ -105,7 +105,7 @@ const CreateCourseForm = () => {
                         name="courseTitle"
                         value={formData.courseTitle}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 p-2 rounded mt-1"
+                        className="w-full border-2 border-purple-800 p-2 rounded mt-1"
                     />
                     {errors.courseTitle && <p className="text-red-500 text-sm">{errors.courseTitle}</p>}
                 </div>
@@ -117,7 +117,7 @@ const CreateCourseForm = () => {
                         name="courseCategory"
                         value={formData.courseCategory}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 p-2 rounded mt-1"
+                        className="w-full border-2 border-purple-800 p-2 rounded mt-1 cursor-pointer"
                     >
                         <option value="">Select Category</option>
                         <option value="Programming">Programming</option>
@@ -138,7 +138,7 @@ const CreateCourseForm = () => {
                         name="courseDescription"
                         value={formData.courseDescription}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 p-2 rounded mt-1"
+                        className="w-full border-2 border-purple-800 p-2 rounded mt-1"
                     />
                     {errors.courseDescription && <p className="text-red-500 text-sm">{errors.courseDescription}</p>}
                 </div>
@@ -151,7 +151,7 @@ const CreateCourseForm = () => {
                         name="coursePrice"
                         value={formData.coursePrice}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 p-2 rounded mt-1"
+                        className="w-full border-2 border-purple-800 p-2 rounded mt-1"
                     />
                     {errors.coursePrice && <p className="text-red-500 text-sm">{errors.coursePrice}</p>}
                 </div>
@@ -164,7 +164,7 @@ const CreateCourseForm = () => {
                             name="isPublished"
                             checked={formData.isPublished}
                             onChange={handleChange}
-                            className="mr-2"
+                            className="mr-2 cursor-pointer"
                         />
                         Published
                     </label>
@@ -178,7 +178,7 @@ const CreateCourseForm = () => {
                         name="discount"
                         value={formData.discount}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 p-2 rounded mt-1"
+                        className="w-full border-2 border-purple-800 p-2 rounded mt-1"
                     />
                     {errors.discount && <p className="text-red-500 text-sm">{errors.discount}</p>}
                 </div>
@@ -191,7 +191,7 @@ const CreateCourseForm = () => {
                         name="courseThumbnail"
                         value={formData.courseThumbnail}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 p-2 rounded mt-1"
+                        className="w-full border-2 border-purple-800 p-2 rounded mt-1"
                     />
                     {errors.courseThumbnail && <p className="text-red-500 text-sm">{errors.courseThumbnail}</p>}
                 </div>
@@ -199,9 +199,9 @@ const CreateCourseForm = () => {
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                    className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 cursor-pointer"
                 >
-                    Submit
+                    <span className="font-semibold">Submit</span>
                 </button>
             </form>
         </div>

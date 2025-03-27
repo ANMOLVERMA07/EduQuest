@@ -6,7 +6,9 @@ const About = () => {
             <div className="max-w-6xl mx-auto text-center">
                 <h1 className="text-4xl font-bold text-gray-800 mb-6">About Us</h1>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                    Welcome to <span className="font-semibold text-blue-500">EduQuest</span>, your ultimate destination for online learning and skill development! 
+                    Welcome to <a onClick={() =>
+            document.getElementById("target-home").scrollIntoView({ behavior: "smooth" })
+          } className="font-semibold text-blue-500 cursor-pointer">EduQuest</a>, your ultimate destination for online learning and skill development! 
                     Our mission is to empower learners across the globe by providing high-quality education anytime, anywhere. We believe that education is the foundation for growth and innovation, and we're here to make it accessible to everyone.
                 </p>
             </div>

@@ -9,7 +9,7 @@ const Navbar = () => {
     const { navigate, isEducator,showLogin,setShowLogin } = useContext(AppContext);
     const { authUser, logout } = authStore(); // Access authUser and logout 
     const location = useLocation();
-    const isCourseListPage = location.pathname.includes('/courses');
+    const isCourseListPage = location.pathname.includes('/courses' | '/educator');
 
     return (
         <div>
