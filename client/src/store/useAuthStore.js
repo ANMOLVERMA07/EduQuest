@@ -12,9 +12,12 @@ export const authStore = create((set,get) => ({
     isLoggingIn:false,
     isUpdatingProfile:false,
     isCheckingAuth:true,
+    // token:localStorage.getItem("authToken"),
+    // setToken: (token) => {
+    //     localStorage.setItem("authToken",token);
+    //     set({ token });
+    // },
 
-    
-    
 
     checkAuth: async() => {
         try {
@@ -41,17 +44,17 @@ export const authStore = create((set,get) => ({
         }
     },
 
-    login: async(data) => {
-        set({ isLoggingIn:true});
+    login: async (data) => {
+        set({ isLoggingIn: true });
         try {
-            const res = await axiosInstance.post(`${BASE_URL}/api/users/login`,data);
-            console.log(res.data)
-            set({authUser:res.data});
+            const res = await axiosInstance.post(`${BASE_URL}/api/users/login`, data);
+            set({ authUser: res.data });
             toast.success("Login Successfully");
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "An unknown error occurred");
+            console.error("Login error:", error.response?.data || error.message);
         } finally {
-            set({ isLoggingIn:false});
+            set({ isLoggingIn: false });
         }
     },
 
@@ -68,7 +71,7 @@ export const authStore = create((set,get) => ({
     updateProfile: async(data) => {
         set({ isUpdatingProfile: true });
         try {
-          const res = await axiosInstance.put("/api/users/profile", data);
+          const res = await axiosInstance.put(`${BASE_URL}/api/users/profile`, data);
           set({ authUser: res.data });
           toast.success("Profile updated successfully");
         } catch (error) {

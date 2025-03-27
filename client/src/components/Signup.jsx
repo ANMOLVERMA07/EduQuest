@@ -43,7 +43,7 @@ const Signup = () => {
 
     try {
       if (state === "Login") {
-        const loginData = { email, password };
+        const loginData = { email, password,role };
         await login(loginData);
       } else {
         const signupData = { firstName, lastName, email, password, role };
@@ -77,7 +77,7 @@ const Signup = () => {
         className="relative bg-white p-10 rounded-xl text-slate-500"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
-        <h1 className="text-center text-2xl text-neutral-700 font-medium">{state}</h1>
+        <h1 className="text-center text-3xl text-neutral-700 font-semibold">{state}</h1>
         <p className="text-sm">Welcome back! Please {state} to continue.</p>
 
         {/* First & Last Name Fields (Sign up only) */}
@@ -131,25 +131,39 @@ const Signup = () => {
         </div>
 
         {/* Role Dropdown (Sign up only) */}
-        {state === "Sign up" && (
+        {/* {state === "Sign up" && (
           <div className="border px-6 py-2 flex items-center gap-2 rounded-full mt-4">
             <label className="text-sm">Role: </label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="outline-none text-sm px-2 py-1 border rounded-full"
+              className="outline-none text-sm px-2 py-1 border rounded-full cursor-pointer"
             >
               <option value="student">Student</option>
               <option value="instructor">Instructor</option>
               <option value="admin">Admin</option>
             </select>
           </div>
-        )}
+        )} */}
+        
+          <div className="border px-6 py-2 flex items-center gap-2 rounded-full mt-4">
+            <label className="text-sm">Role: </label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="outline-none text-sm px-2 py-1 border rounded-full cursor-pointer"
+            >
+              <option value="student">Student</option>
+              <option value="instructor">Instructor</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="bg-blue-600 cursor-pointer hover:scale-105 w-full text-white py-2 rounded-full mt-4"
+          className="bg-blue-600 cursor-pointer hover:scale-105 w-full text-white font-semi py-2 rounded-full mt-4"
           disabled={isSigningUp || isLoggingIn}
         >
           {isSigningUp || isLoggingIn ? "Processing..." : state === "Login" ? "Login" : "Create Account"}

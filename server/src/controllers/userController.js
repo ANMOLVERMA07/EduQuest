@@ -5,9 +5,9 @@ import { generateToken } from "../utils/generateToken.js";
 
 
 export const signup = async(req,res) => {
-    const {firstName,lastName,email,password} = req.body;
+    const {firstName,lastName,email,password,role} = req.body;
     try {
-        if(!firstName || !lastName || !email || !password){
+        if(!firstName || !lastName || !email || !password || !role){
             return res.status(StatusCodes.BAD_REQUEST).json({message:"All Fields are required"});
         }
 
@@ -24,12 +24,13 @@ export const signup = async(req,res) => {
         const hashedPassword = await bcrypt.hash(password,salt);
 
         const newUser = new USER({
-            fullName,
+            firstName,
+            lastName,
             email,
             password:hashedPassword,
+            role,
         });
 
-        console.log(newUser)
 
         if(newUser){
             generateToken(newUser._id,res);
@@ -37,9 +38,10 @@ export const signup = async(req,res) => {
 
             res.status(StatusCodes.CREATED).json({
                 _id:newUser._id,
-                fullName:newUser.fullName,
+                firstName:newUser.firstName,
+                lastName:newUser.lastName,
                 email:newUser.email,
-                profilePic:newUser.profilePic,
+                role:newUser.role,
             });
         }else{
             res.status(StatusCodes.BAD_REQUEST).json({message: "Invalid user data"});
@@ -52,44 +54,43 @@ export const signup = async(req,res) => {
 };
 
 
-export const login = async(req,res) => {
-    const {email,password} = req.body;
-    console.log(req.body);
-    
+export const login = async (req, res) => {
+    const { email, password, role } = req.body;
+
     try {
-        if(!email || !password){
-            return res.status(StatusCodes.BAD_REQUEST).json("All fields are required");
+        if (!email || !password ) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "All fields are required" });
         }
 
-        const user = await USER.findOne({email});
-        if(!user){
-            return res.status(StatusCodes.NOT_FOUND).json({message:"Please Signup First"});
+        const user = await USER.findOne({ email });
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "Please Signup First" });
         }
 
-        const debug = await bcrypt.compare(password,user.password);
-        if(!debug){
-            return res.status(StatusCodes.BAD_REQUEST).json({message:"Incorrect Password"});
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Incorrect Password" });
         }
 
+        // Compare roles
+        if (user.role !== role) {
+            return res.status(StatusCodes.FORBIDDEN).json({ message: `Access denied: Expected role '${user.role}', but got '${role}'` });
+        }
 
-        generateToken(user._id,res);
-        console.log(user._id,
-            user.fullName,
-            user.email,
-            user.profilePic,);
-        
+        // Generate and send token
+        generateToken(user._id, res);
+
         res.status(StatusCodes.ACCEPTED).json({
-            _id:user._id,
-            fullName:user.fullName,
-            email:user.email,
-            profilePicture:user.profilePic,
+            _id: user._id,
+            email: user.email,
+            role: user.role,
+            firstName: user.firstName, // Optional: Add more fields if required
         });
     } catch (error) {
-        console.log("Error in login controller",error.message);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message: "Internal Server Error"}); 
+        console.error("Error in login controller:", error.stack);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
     }
 };
-
 export const logout = (req,res) => {
     try {
         res.cookie("jwt","",{maxAge:0});
@@ -103,15 +104,15 @@ export const logout = (req,res) => {
 
 export const updateProfile = async(req,res) => {
     try {
-        const {profilePicture} = req.body;
+        const {profilePic} = req.body;
         const userId = req.user._id;
 
-        if(!profilePicture){
+        if(!profilePic){
             return res.status(StatusCodes.BAD_REQUEST).json({message:"profile picture not found"});
         }
 
-        const uploadResponse = await cloudinary.uploader.upload(profilePicture);
-        const selectedUser = await USER.findByIdAndUpdate(userId,{profilePicture:uploadResponse.secure_url},{new:true});
+        const uploadResponse = await cloudinary.uploader.upload(profilePic);
+        const selectedUser = await USER.findByIdAndUpdate(userId,{profilePic:uploadResponse.secure_url},{new:true});
 
         res.status(StatusCodes.OK).json(selectedUser);
     } catch (error) {

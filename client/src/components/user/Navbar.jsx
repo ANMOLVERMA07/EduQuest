@@ -20,10 +20,10 @@ const Navbar = () => {
                 }`}
             >
                 <h1
-                    className="text-3xl font-bold w-32 lg:w-32 cursor-pointer"
+                    className="text-3xl font-bold w-32 lg:w-32 cursor-pointer flex flex-row"
                     onClick={() => navigate('/')}
                 >
-                    EduQuest
+                    Edu <span className='text-blue-600'>Quest</span>
                 </h1>
 
                 <div className="flex items-center gap-5 text-gray-500">

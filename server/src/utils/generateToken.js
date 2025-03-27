@@ -16,7 +16,7 @@ export const generateToken = (userId, res, options = {}) => {
     const expiresIn = options.expiresIn || "7d";
 
     // Generate the JWT
-    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn });
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn:"7d" });
 
     // Set secure cookie options
     res.cookie("jwt", token, {
