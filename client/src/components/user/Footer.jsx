@@ -1,21 +1,34 @@
 import React from 'react'
 import { assets } from '../../assets/assets'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <footer className='bg-gray-900 md:px-36 text-left w-full p-3 mt-10'>
       <div className='flex flex-col md:flex-row items-start x-8 md:px-0 justify-center gap-10 md:gap-32 py-10 border-b border-white/30'>
         <div className='flex flex-col md:items-start items-center w-full'>
-          <img src={assets.logo_dark} alt="" />
-          <p className='mt-6 text-center md:text-left text-sm text-white/80'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis est ipsa dicta earum exercitationem! Doloribus sint officia soluta quae, similique ipsum dicta sequi beatae, tempore et quis quasi? Laborum, nihil!</p>
+          {/* <h1 src={assets.logo_dark} alt="" /> */}
+          <h1 className='text-amber-50 text-3xl' onClick={() =>
+            document.getElementById("target-home").scrollIntoView({ behavior: "smooth" })
+          }
+ >EduQuest</h1>
+          <p className='mt-6 text-center md:text-left text-sm text-white/80'>Our mission is to empower learners across the globe by providing high-quality education anytime, anywhere. We believe that education is the foundation for growth and innovation, and we're here to make it accessible to everyone.</p>
         </div>
         <div className='flex flex-col md:items-start items-center w-full'>
           <h2 className='font-semibold text-white mb-5'>Company</h2>
           <ul className='flex md:flex-col w-full justify-between text-sm text-white/80 md:space-y-2'>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About us</a></li>
-            <li><a href="/contact">Contact us</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            <li><a onClick={() =>
+              document.getElementById("target-home").scrollIntoView({ behavior: "smooth" })
+            }>Home</a></li>
+            <li><a onClick={() =>
+              document.getElementById("target-about").scrollIntoView({ behavior: "smooth" })
+            }
+            >About us</a></li>
+            <li><a onClick={() =>
+              document.getElementById("target-contact").scrollIntoView({ behavior: "smooth" })
+            }>Contact us</a></li>
+            {/* <li><a href="#">Privacy Policy</a></li> */}
           </ul>
         </div>
         <div className='hidden  md:flex flex-col items-start w-full'>

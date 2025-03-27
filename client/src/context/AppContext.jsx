@@ -8,6 +8,7 @@ export const AppContext = createContext();
 export const AppContextProvider = (props) => {
     const currency = import.meta.env.VITE_CURRENCY;
     const navigate = useNavigate();
+    const [showLogin,setShowLogin] = useState(false);
     const [allCourses, setAllCourses] = useState([]);
     let [isEducator, setIsEducator] = useState(true);
     const [entrolledCourses, setEntrolledCourses] = useState([]);
@@ -91,7 +92,9 @@ export const AppContextProvider = (props) => {
         calculateNoOfLectures,
         calculateCourseDuration,
         calculateChapterTime,
-        entrolledCourses
+        entrolledCourses,
+        showLogin,
+        setShowLogin
 
     };
 

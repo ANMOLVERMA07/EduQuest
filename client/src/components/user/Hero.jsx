@@ -12,7 +12,7 @@ import ContactUs from '../../components/ContactUs.jsx'
 const Hero = () => {
   return (
     <div>
-      <div className="flex flex-col items-center justify-center w-full md:pt-36    md:px-0 space-y-7 text-center bg-gradient-to-b from-cyan-100/70">
+      <div id='target-home' className="flex flex-col items-center justify-center w-full md:pt-36    md:px-0 space-y-7 text-center bg-gradient-to-b from-cyan-100/70">
         <h1 className="text-5xl leading-snug md:text-home-heading-large p-3 mt-4 text-home-heading-small relative font-bold text-gray-800 max-w-3xl mx-auto">
           Empower your future with the courses designed to{' '}
           <span className="text-blue-600">fit your choice.</span>

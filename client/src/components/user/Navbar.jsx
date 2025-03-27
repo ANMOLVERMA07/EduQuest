@@ -1,17 +1,16 @@
-// Navbar.jsx
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { assets } from '../../assets/assets';
-import { useClerk, UserButton, useUser } from '@clerk/clerk-react';
 import { AppContext } from '../../context/AppContext';
+import { authStore } from '../../store/useAuthStore'; // Access authStore
+import Signup from '../../components/Signup'; // Adjust the path as needed
 
 const Navbar = () => {
-    const { navigate,isEducator } = useContext(AppContext);
+    const { navigate, isEducator,showLogin,setShowLogin } = useContext(AppContext);
+    const { authUser, logout } = authStore(); // Access authUser and logout 
     const location = useLocation();
     const isCourseListPage = location.pathname.includes('/courses');
-    const { openSignIn } = useClerk();
-    const { user } = useUser();
- 
+
     return (
         <div>
             {/* Desktop Navbar */}
@@ -20,33 +19,35 @@ const Navbar = () => {
                     isCourseListPage ? 'bg-white' : 'bg-cyan-100/70'
                 }`}
             >
-
                 <h1
-                className='text-3xl font-bold w-32 lg:w-32 cursor-pointer'
-                onClick={() => navigate('/')} 
-                >EduQuest</h1>
-                {/* <img 
-                    onClick={() => navigate('/')} 
-                    src={assets.logo} 
-                    alt="Logo" 
-                    className="w-32 lg:w-32 cursor-pointer" 
-                /> */}
+                    className="text-3xl font-bold w-32 lg:w-32 cursor-pointer"
+                    onClick={() => navigate('/')}
+                >
+                    EduQuest
+                </h1>
 
                 <div className="flex items-center gap-5 text-gray-500">
                     <div className="flex items-center gap-5">
-                        {user && (
+                        {authUser && (
                             <>
-                                {/* <button onClick={()=>{navigate('/educator')}}>{isEducator?'Educator Dashboard':'Become Educator'}</button> */}
                                 <Link to="/courses/enrolled">My Enrollments</Link>
                             </>
                         )}
                     </div>
-                    {user ? (
-                        <UserButton />
+
+                    {authUser ? (
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={logout}
+                                className="bg-red-600 text-white px-4 py-2 rounded-full cursor-pointer"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     ) : (
-                        <button 
-                            onClick={() => openSignIn()} 
-                            className="bg-blue-600 text-white px-5 py-2 rounded-full"
+                        <button
+                            onClick={() => setShowLogin(true)}
+                            className="bg-blue-600 text-white px-5 py-2 rounded-full cursor-pointer"
                         >
                             Create Account
                         </button>
@@ -60,32 +61,37 @@ const Navbar = () => {
                     isCourseListPage ? 'bg-white' : 'bg-cyan-100/70'
                 }`}
             >
-                <img 
-                    onClick={() => navigate('/')} 
-                    src={assets.logo} 
-                    alt="Logo" 
-                    className="w-20 cursor-pointer" 
+                <img
+                    onClick={() => navigate('/')}
+                    src={assets.logo}
+                    alt="Logo"
+                    className="w-20 cursor-pointer"
                 />
 
                 <div className="flex items-center gap-1 sm:gap-2 max-sm:text-xs">
-                    {user && (
-                        <>
-                             {/* <button onClick={()=>{navigate('/educator')}}>{isEducator?'Educator Dashboard':'Become Educator'}</button> */}
-                            <Link to="/courses/enrolled">My Enrollments</Link>
-                        </>
+                    {authUser && (
+                        <Link to="/api/courses/enrolled">My Enrollments</Link>
                     )}
-                    {user ? (
-                        <UserButton />
+                    {authUser ? (
+                        <button
+                            onClick={logout}
+                            className="bg-red-600 text-white px-3 py-1 rounded-full"
+                        >
+                            Logout
+                        </button>
                     ) : (
-                        <img 
-                            onClick={() => openSignIn()} 
-                            src={assets.user_icon} 
-                            alt="User Icon" 
-                            className="w-6 h-6" 
+                        <img
+                            onClick={() => setShowLogin(true)}
+                            src={assets.user_icon}
+                            alt="User Icon"
+                            className="w-6 h-6 cursor-pointer"
                         />
                     )}
                 </div>
             </div>
+
+            {/* Login Modal */}
+            {showLogin && <Signup />}
         </div>
     );
 };

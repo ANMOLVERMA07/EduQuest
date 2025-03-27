@@ -1,8 +1,10 @@
 import {create} from "zustand";
+import { useState } from "react";
 import { axiosInstance } from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 
-const BASE_URL=import.meta.env.MODE==="development" ? "https://eduquest-blvt.onrender.com" : "/";
+// const BASE_URL=import.meta.env.MODE==="development" ? "http://localhost:3000" : "/";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const authStore = create((set,get) => ({
     authUser:null,
@@ -11,9 +13,12 @@ export const authStore = create((set,get) => ({
     isUpdatingProfile:false,
     isCheckingAuth:true,
 
+    
+    
+
     checkAuth: async() => {
         try {
-         const res = await axiosInstance.get("/users/check");
+         const res = await axiosInstance.get(`${BASE_URL}/api/users/check`);
          set({ authUser:res.data});
         } catch (error) {
             console.log("Error in checkAuth:", error);
@@ -26,7 +31,7 @@ export const authStore = create((set,get) => ({
     signup:async(data)=> {
         set({ isSigningUp: true});
         try {
-            const res = await axiosInstance.post("/users/signup",data);
+            const res = await axiosInstance.post(`${BASE_URL}/api/users/signup`,data);
             set({ authUser:res.data});
             toast.success("Signup successfully");
         } catch (error) {
@@ -39,7 +44,8 @@ export const authStore = create((set,get) => ({
     login: async(data) => {
         set({ isLoggingIn:true});
         try {
-            const res = await axiosInstance.post("/users/login",data);
+            const res = await axiosInstance.post(`${BASE_URL}/api/users/login`,data);
+            console.log(res.data)
             set({authUser:res.data});
             toast.success("Login Successfully");
         } catch (error) {
@@ -51,7 +57,7 @@ export const authStore = create((set,get) => ({
 
     logout: async() => {
         try {
-            await axiosInstance.post("/users/logout");
+            await axiosInstance.post(`${BASE_URL}/api/users/logout`);
             set({authUser:null});
             toast.success("Logged out successfully");
         } catch (error) {
@@ -62,7 +68,7 @@ export const authStore = create((set,get) => ({
     updateProfile: async(data) => {
         set({ isUpdatingProfile: true });
         try {
-          const res = await axiosInstance.put("/users/profile", data);
+          const res = await axiosInstance.put("/api/users/profile", data);
           set({ authUser: res.data });
           toast.success("Profile updated successfully");
         } catch (error) {

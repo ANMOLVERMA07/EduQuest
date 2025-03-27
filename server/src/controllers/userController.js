@@ -29,6 +29,8 @@ export const signup = async(req,res) => {
             password:hashedPassword,
         });
 
+        console.log(newUser)
+
         if(newUser){
             generateToken(newUser._id,res);
             await newUser.save();
@@ -37,7 +39,7 @@ export const signup = async(req,res) => {
                 _id:newUser._id,
                 fullName:newUser.fullName,
                 email:newUser.email,
-                profilePicture:newUser.profilePicture,
+                profilePic:newUser.profilePic,
             });
         }else{
             res.status(StatusCodes.BAD_REQUEST).json({message: "Invalid user data"});
@@ -52,6 +54,8 @@ export const signup = async(req,res) => {
 
 export const login = async(req,res) => {
     const {email,password} = req.body;
+    console.log(req.body);
+    
     try {
         if(!email || !password){
             return res.status(StatusCodes.BAD_REQUEST).json("All fields are required");
@@ -67,12 +71,18 @@ export const login = async(req,res) => {
             return res.status(StatusCodes.BAD_REQUEST).json({message:"Incorrect Password"});
         }
 
+
         generateToken(user._id,res);
+        console.log(user._id,
+            user.fullName,
+            user.email,
+            user.profilePic,);
+        
         res.status(StatusCodes.ACCEPTED).json({
             _id:user._id,
             fullName:user.fullName,
             email:user.email,
-            profilePicture:user.profilePicture,
+            profilePicture:user.profilePic,
         });
     } catch (error) {
         console.log("Error in login controller",error.message);
